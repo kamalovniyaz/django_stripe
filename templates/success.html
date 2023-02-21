@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Статус оплаты
+{% endblock %}
+
+{% block stripe %}
+    <script src="https://js.stripe.com/v3/"></script>
+{% endblock %}
+
+{% block content %}
+    <a href="/">Главная</a>
+    <a href="/admin">Admin Panel</a>
+    <h1>Платеж прошел успешно!</h1>
+{% endblock %}

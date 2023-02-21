@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Товары
+{% endblock %}
+
+<script src="https://js.stripe.com/v3/"></script>
+
+{% block content %}
+    <a href="/admin">Admin Panel</a>
+    <a href="{% url "order" request.user.id %}">Корзина</a>
+    {% if item is Null %}
+      {% for item in items %}
+    <section>
+      <div class="product">
+        <div class="description">
+                <h3>{{ item.name }}</h3>
+                <h3>$ {{ item.price }}</h3>
+        </div>
+          <form action="{%  url "item-id" item.id %}" method="GET">
+                  {% csrf_token %}
+                <button type="submit" id="checkout-button">Info</button>
+          </form>
+          <p>
+          <form action="{%  url "add-to-order" request.user.id item.id %}" method="POST">
+                  {% csrf_token %}
+                <button type="submit" id="checkout-button">Добавить в корзину</button>
+          </form>
+          <p>
+          <form action="{%  url "buy-id" item.id %}" method="POST">
+                  {% csrf_token %}
+                <button type="submit" id="checkout-button">Buy</button>
+          </form>
+
+      </div>
+    </section>
+  {% endfor %}
+      {% else %}
+      <title>{{ item.name }}</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <a href="{% url "home" %}">Главная</a>
+    <section>
+      <div class="product">
+        <div class="description">
+                <h2>Модель</h2>
+                <h3>{{ item.name }}</h3>
+                <h2>Описание</h2>
+                <h3>{{ item.description }}</h3>
+                <h2>Цена за шт:</h2>
+                <h3>${{ item.price }}</h3>
+            <p>
+          <form action="{%  url "buy-id" item.id %}" method="POST">
+                  {% csrf_token %}
+                <button type="submit" id="checkout-button">Buy</button>
+          </form>
+        </div>
+      </div>
+    </section>
+  {% endif %}
+{% endblock %}

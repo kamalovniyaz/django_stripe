@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Корзина
+{% endblock %}
+
+<script src="https://js.stripe.com/v3/"></script>
+
+{% block content %}
+      <a href="/">Главная</a>
+      <a href="/admin">Admin Panel</a>
+    <script src="https://js.stripe.com/v3/"></script>
+    <body>
+
+    {% if order %}
+      {% for b in order %}
+    <section>
+      <div class="product">
+        <div class="description">
+            <h3>{{ b.item.name }}</h3>
+                <h3>Кол-во: {{ b.count }}</h3>
+                <h3>Цена за шт: ${{ b.item.price }}</h3>
+                <form action="{%  url "del-from-order" user.id b.item.id %}" method="POST">
+                  {% csrf_token %}
+                <button type="submit" id="checkout-button">Убрать 1 штуку</button>
+                </form>
+        </div>
+      </div>
+
+        {% endfor %}
+        {% else %}
+        <h1>Корзина пуста!</h1>
+        {% endif %}
+    <p>
+    </section>
+    {% if order %}
+    <form action="{%  url "buy-all-order" user.id %}" method="POST">
+        {% csrf_token %}
+    <button type="submit" id="checkout-button">Оплатить всё</button>
+    </form>
+    {% endif %}
+{% endblock %}
